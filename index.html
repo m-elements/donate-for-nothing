@@ -18,18 +18,72 @@ body{
     background:linear-gradient(180deg,#04060c,#0c1322);
 }
 
+/* Card with Rotating Laser Border */
 .card{
+    position:relative;
     width:min(92%,420px);
     background:#0d111a; /* Deep Space Blue-Black Card */
-    border:1px solid #00f2fe; /* Cyber Sapphire Border */
     border-radius:20px;
     padding:22px;
-    box-shadow:0 0 25px rgba(0, 242, 254, 0.25); /* Cyan Glow */
+    overflow:hidden; /* Isse rotating light bahar nahi jayegi */
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.15); /* Soft outer glow */
+}
+
+/* 1. Rotating Laser Beam (Behind Content) */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 20%,
+        #00f2fe 40%, /* Cyan Laser */
+        #0072ff 50%, /* Blue Laser */
+        transparent 60%
+    );
+    animation: rotateLaser 4s linear infinite;
+    z-index: 1;
+}
+
+/* 2. Inner Cover (To mask the center and make a 3px thin border) */
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 3px; /* Border thickness control */
+    background: #0d111a;
+    border-radius: 17px;
+    z-index: 2;
+}
+
+/* 3. Card ke saare contents ko light ke upar dikhane ke liye */
+.card * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Laser Rotation Keyframes */
+@keyframes rotateLaser {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 h1{text-align:center;margin:0;color:#00f2fe;}
 .tag{text-align:center;color:#a3c5d8}
-.qr{display:block;width:230px;max-width:100%;margin:18px auto;border-radius:12px;border:3px solid #00f2fe}
+
+.qr{
+    display:block;
+    width:230px;
+    max-width:100%;
+    margin:18px auto;
+    border-radius:12px;
+    border:3px solid #00f2fe;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
 .upi{background:#121824;padding:10px;border-radius:10px;text-align:center;word-break:break-all;color:#00f2fe}
 
 /* Buttons style with smooth press animation */
