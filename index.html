@@ -36,5 +36,39 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",1800);
 }
 </script>
+  <button id="shareBtn"
+style="
+display:block;
+width:90%;
+max-width:320px;
+margin:15px auto;
+padding:14px;
+background:linear-gradient(45deg,#d4af37,#ffd700);
+border:none;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 20px rgba(212,175,55,.5);
+">
+  </script>
+📤 Share This Website
+</button>
+
+<script>
+document.getElementById("shareBtn").onclick = async () => {
+  const data = {
+    title: "Donate For Nothing 😂",
+    text: "Donate any amount and receive absolutely NOTHING 😂",
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    navigator.share(data);
+  } else {
+    navigator.clipboard.writeText(window.location.href);
+    alert("✅ Website link copied! Ab kisi ko bhi bhej do.");
+  }
+};
 </body>
 </html>
