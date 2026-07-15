@@ -32,7 +32,6 @@ h1{text-align:center;margin:0;}
 .qr{display:block;width:230px;max-width:100%;margin:18px auto;border-radius:12px;border:3px solid #d4af37}
 .upi{background:#1b1b1b;padding:10px;border-radius:10px;text-align:center;word-break:break-all}
 
-/* Buttons style */
 button{
     width:100%;
     margin-top:12px;
@@ -71,7 +70,7 @@ footer{text-align:center;margin-top:18px;color:#c8b46a;font-size:13px}
     align-items:center;
     z-index:9999;
     color:#d4af37;
-    transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth Fade Out */
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .loader-ring{
@@ -113,8 +112,10 @@ footer{text-align:center;margin-top:18px;color:#c8b46a;font-size:13px}
 <div class="card">
     <h1>Donate For Nothing</h1>
     <p class="tag">Donate any amount and receive absolutely NOTHING.</p>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=upi%3A%2F%2Fpay%3Fpa%3Dmanurathour99%40fam%26pn%3DManu%26cu%3DINR
-        
+    
+    <!-- Dynamic QR Code Integrated Here -->
+    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=upi%3A%2F%2Fpay%3Fpa%3Dmanurathour99%40fam%26pn%3DManu%26cu%3DINR" alt="QR">
+    
     <div class="upi" id="upi">manurathour99@fam</div>
     
     <button onclick="copyUPI()">Copy UPI</button>
@@ -134,7 +135,7 @@ function copyUPI(){
     setTimeout(()=>t.style.display="none",1800);
 }
 
-// Loader fade-out on window load
+// Loader fade-out
 window.addEventListener("load", function(){
     setTimeout(function(){
         const loader = document.getElementById("loading-screen");
@@ -145,7 +146,7 @@ window.addEventListener("load", function(){
                 loader.style.display = "none";
             }, 500);
         }
-    }, 1500); // 1.5 seconds loader delay for premium feel
+    }, 1500);
 });
 
 // Share Button logic
@@ -161,7 +162,6 @@ document.getElementById("shareBtn").addEventListener("click", async () => {
             console.log("Error sharing:", err);
         }
     } else {
-        // Fallback for browsers that don't support native share
         navigator.clipboard.writeText(window.location.href);
         alert("Link copied to clipboard! Share it with your friends.");
     }
