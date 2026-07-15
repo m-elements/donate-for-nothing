@@ -16,219 +16,6 @@ body{
     justify-content:center;
     min-height:100vh;
     background:linear-gradient(180deg,#04060c,#0c1322);
-}
-
-/* Card with Rotating Laser Border */
-.card{
-    position:relative;
-    width:min(92%,420px);
-    background:#0d111a; /* Deep Space Blue-Black Card */
-    border-radius:20px;
-    padding:22px;
-    overflow:hidden; /* Isse rotating light bahar nahi jayegi */
-    box-shadow: 0 0 30px rgba(0, 242, 254, 0.15); /* Soft outer glow */
-}
-
-/* 1. Rotating Laser Beam (Behind Content) */
-.card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        from 0deg,
-        transparent 20%,
-        #00f2fe 40%, /* Cyan Laser */
-        #0072ff 50%, /* Blue Laser */
-        transparent 60%
-    );
-    animation: rotateLaser 4s linear infinite;
-    z-index: 1;
-}
-
-/* 2. Inner Cover (To mask the center and make a 3px thin border) */
-.card::after {
-    content: '';
-    position: absolute;
-    inset: 3px; /* Border thickness control */
-    background: #0d111a;
-    border-radius: 17px;
-    z-index: 2;
-}
-
-/* 3. Card ke saare contents ko light ke upar dikhane ke liye */
-.card * {
-    position: relative;
-    z-index: 3;
-}
-
-/* Laser Rotation Keyframes */
-@keyframes rotateLaser {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-h1{text-align:center;margin:0;color:#00f2fe;}
-.tag{text-align:center;color:#a3c5d8}
-
-.qr{
-    display:block;
-    width:230px;
-    max-width:100%;
-    margin:18px auto;
-    border-radius:12px;
-    border:3px solid #00f2fe;
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
-}
-
-.upi{background:#121824;padding:10px;border-radius:10px;text-align:center;word-break:break-all;color:#00f2fe}
-
-/* Buttons style with smooth press animation */
-button{
-    width:100%;
-    margin-top:12px;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    background:#00d2ff;
-    color:#050814;
-    font-weight:bold;
-    cursor:pointer;
-    transition: transform 0.1s ease, box-shadow 0.2s;
-}
-button:active{
-    transform: scale(0.95); /* Button click zoom-out effect */
-}
-
-#shareBtn {
-    background: linear-gradient(45deg, #0072ff, #00f2fe);
-    color: #050814;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-}
-
-footer{text-align:center;margin-top:18px;color:#709cb5;font-size:13px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00f2fe;color:#050814;padding:10px 18px;border-radius:10px;display:none;z-index:10000;font-weight:bold}
-
-/* Loading Screen Styles */
-#loading-screen{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#03050a;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    color:#00f2fe;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.loader-ring{
-    width:70px;
-    height:70px;
-    border:5px solid #101726;
-    border-top:5px solid #00f2fe;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin-bottom:20px;
-}
-
-@keyframes spin{
-    100%{transform:rotate(360deg)}
-}
-
-#loading-screen h2{
-    font-size:28px;
-    letter-spacing:2px;
-    margin: 0;
-}
-
-#loading-screen p{
-    color:#709cb5;
-    margin-top:10px;
-}
-</style>
-</head>
-<body>
-
-<!-- Premium Loader Screen -->
-<div id="loading-screen">
-  <div class="loader-ring"></div>
-  <h2>Donate For Nothing</h2>
-  <p>Loading Premium Experience...</p>
-</div>
-
-<!-- Main Card Content -->
-<div class="card">
-    <h1>Donate For Nothing</h1>
-    <p class="tag">Donate any amount and receive absolutely NOTHING.</p>
-    
-    <!-- Dynamic QR Code -->
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=upi%3A%2F%2Fpay%3Fpa%3Dmanurathour99%40fam%26pn%3DManu%26cu%3DINR" alt="QR">
-    
-    <div class="upi" id="upi">manurathour99@fam</div>
-    
-    <button onclick="copyUPI()">Copy UPI</button>
-    <button id="shareBtn">Share This Page</button>
-    
-    <footer>Owner & Developer: Manu Singh Rathour</footer>
-</div>
-
-<div class="toast" id="t">UPI Copied ✅</div>
-
-<script>
-// Web Audio API: Dynamic Click Sound Generator
-function playClickSound() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        
-        oscillator.type = 'sine'; // Clear and sweet sound
-        
-        // High pitch tap sound (like premium app tap)
-        oscillator.frequency.setValueAtTime(1500, audioCtx.currentTime); 
-        oscillator.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.08);
-        
-        // Quick fade-out so it sounds like a sharp "tick"
-        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime); 
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.08);
-    } catch (e) {
-        console.log("Audio not supported or blocked by browser:", e);
-    }
-}
-
-// Copy UPI Functionality
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Donate For Nothing</title>
-<style>
-*{box-sizing:border-box}
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#05070f;
-    color:#d1f0ff; /* Soft Ice Blue Text */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    background:linear-gradient(180deg,#04060c,#0c1322);
     overflow-x: hidden;
 }
 
@@ -256,12 +43,8 @@ body{
         transform: translateY(0) scale(1);
         opacity: 0;
     }
-    10% {
-        opacity: 0.6;
-    }
-    90% {
-        opacity: 0.6;
-    }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
     100% {
         transform: translateY(-105vh) scale(0.4);
         opacity: 0;
@@ -398,7 +181,7 @@ button:active{
 footer{text-align:center;margin-top:18px;color:#709cb5;font-size:13px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00f2fe;color:#050814;padding:10px 18px;border-radius:10px;display:none;z-index:10000;font-weight:bold}
 
-/* Loading Screen Styles */
+/* Loading Screen with 100% BULLETPROOF CSS Fallback */
 #loading-screen{
     position:fixed;
     top:0;
@@ -412,7 +195,17 @@ footer{text-align:center;margin-top:18px;color:#709cb5;font-size:13px}
     align-items:center;
     z-index:9999;
     color:#00f2fe;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    /* Agar JS load na bhi ho, ye loader 1.5 seconds baad automatic smoothly gayab ho jayega */
+    animation: forceHideLoader 0.5s forwards 1.5s; 
+    pointer-events: none; /* Prevents blocking clicks after hiding */
+}
+
+@keyframes forceHideLoader {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+    }
 }
 
 .loader-ring{
@@ -478,9 +271,9 @@ footer{text-align:center;margin-top:18px;color:#709cb5;font-size:13px}
 // Web Audio API: Dynamic Click Sound Generator
 function playClickSound() {
     try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
+        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var oscillator = audioCtx.createOscillator();
+        var gainNode = audioCtx.createGain();
         
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(1500, audioCtx.currentTime); 
@@ -495,7 +288,7 @@ function playClickSound() {
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.08);
     } catch (e) {
-        console.log("Audio support blocked by browser:", e);
+        console.log("Audio not supported:", e);
     }
 }
 
@@ -503,357 +296,59 @@ function playClickSound() {
 function copyUPI(){
     playClickSound();
     navigator.clipboard.writeText("manurathour99@fam");
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Donate For Nothing</title>
-<style>
-*{box-sizing:border-box}
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#05070f;
-    color:#d1f0ff; /* Soft Ice Blue Text */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    background:linear-gradient(180deg,#04060c,#0c1322);
-    overflow-x: hidden;
-}
-
-/* Floating Space Particles Background */
-#particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 0;
-    pointer-events: none;
-}
-.particle {
-    position: absolute;
-    bottom: -10px;
-    background: rgba(0, 242, 254, 0.35);
-    border-radius: 50%;
-    animation: floatUp 8s infinite linear;
-    box-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
-}
-@keyframes floatUp {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 0;
+    var t = document.getElementById("t");
+    if(t) {
+        t.style.display = "block";
+        setTimeout(function(){ t.style.display = "none"; }, 1800);
     }
-    10% {
-        opacity: 0.6;
-    }
-    90% {
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateY(-105vh) scale(0.4);
-        opacity: 0;
-    }
-}
-
-/* Card with Rotating Laser Border */
-.card{
-    position:relative;
-    width:min(92%,420px);
-    background:#0d111a; /* Deep Space Blue-Black Card */
-    border-radius:20px;
-    padding:22px;
-    overflow:hidden;
-    box-shadow: 0 0 35px rgba(0, 242, 254, 0.15);
-    z-index: 5;
-}
-
-/* Rotating Laser Beam (Behind Content) */
-.card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        from 0deg,
-        transparent 20%,
-        #00f2fe 40%, /* Cyan Laser */
-        #0072ff 50%, /* Blue Laser */
-        transparent 60%
-    );
-    animation: rotateLaser 4s linear infinite;
-    z-index: 1;
-}
-
-/* Inner Cover to mask center */
-.card::after {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    background: #0d111a;
-    border-radius: 17px;
-    z-index: 2;
-}
-
-/* Pushes all internal elements above laser layer */
-.card * {
-    position: relative;
-    z-index: 3;
-}
-
-@keyframes rotateLaser {
-    100% { transform: rotate(360deg); }
-}
-
-/* Shimmering Metallic Heading */
-.shimmer-text {
-    text-align: center;
-    margin: 0;
-    font-size: 32px;
-    font-weight: bold;
-    background: linear-gradient(90deg, #00f2fe, #ffffff, #0072ff, #00f2fe);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmerWave 3.5s linear infinite;
-}
-@keyframes shimmerWave {
-    0% { background-position: 0% center; }
-    100% { background-position: -200% center; }
-}
-
-.tag{text-align:center;color:#a3c5d8}
-
-/* QR Code Container with Scanner Line */
-.qr-container {
-    position: relative;
-    width: 230px;
-    height: 230px;
-    margin: 18px auto;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 3px solid #00f2fe;
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
-}
-.qr{
-    display:block;
-    width:100%;
-    height:100%;
-}
-.scan-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, #00f2fe, transparent);
-    box-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
-    animation: scanAnimation 3s ease-in-out infinite;
-    z-index: 4;
-}
-@keyframes scanAnimation {
-    0%, 100% { top: 0%; }
-    50% { top: 100%; }
-}
-
-.upi{background:#121824;padding:10px;border-radius:10px;text-align:center;word-break:break-all;color:#00f2fe}
-
-/* Buttons style with smooth press animation */
-button{
-    width:100%;
-    margin-top:12px;
-    padding:13px;
-    border:none;
-    border-radius:12px;
-    background:#00d2ff;
-    color:#050814;
-    font-weight:bold;
-    cursor:pointer;
-    transition: transform 0.1s ease, box-shadow 0.2s;
-}
-button:active{
-    transform: scale(0.95);
-}
-
-#shareBtn {
-    background: linear-gradient(45deg, #0072ff, #00f2fe);
-    color: #050814;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-}
-
-footer{text-align:center;margin-top:18px;color:#709cb5;font-size:13px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#00f2fe;color:#050814;padding:10px 18px;border-radius:10px;display:none;z-index:10000;font-weight:bold}
-
-/* Loading Screen Styles */
-#loading-screen{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:#03050a;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    color:#00f2fe;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.loader-ring{
-    width:70px;
-    height:70px;
-    border:5px solid #101726;
-    border-top:5px solid #00f2fe;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin-bottom:20px;
-}
-
-@keyframes spin{
-    100%{transform:rotate(360deg)}
-}
-
-#loading-screen h2{
-    font-size:28px;
-    letter-spacing:2px;
-    margin: 0;
-}
-
-#loading-screen p{
-    color:#709cb5;
-    margin-top:10px;
-}
-</style>
-</head>
-<body>
-
-<!-- Space Particles Container -->
-<div id="particles-container"></div>
-
-<!-- Premium Loader Screen -->
-<div id="loading-screen">
-  <div class="loader-ring"></div>
-  <h2>Donate For Nothing</h2>
-  <p>Loading Premium Experience...</p>
-</div>
-
-<!-- Main Card Content -->
-<div class="card">
-    <h1 class="shimmer-text">Donate For Nothing</h1>
-    <p class="tag">Donate any amount and receive absolutely NOTHING.</p>
-    
-    <!-- QR Scanner Container -->
-    <div class="qr-container">
-        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=upi%3A%2F%2Fpay%3Fpa%3Dmanurathour99%40fam%26pn%3DManu%26cu%3DINR" alt="QR">
-        <div class="scan-line"></div>
-    </div>
-    
-    <div class="upi" id="upi">manurathour99@fam</div>
-    
-    <button onclick="copyUPI()">Copy UPI</button>
-    <button id="shareBtn">Share This Page</button>
-    
-    <footer>Owner & Developer: Manu Singh Rathour</footer>
-</div>
-
-<div class="toast" id="t">UPI Copied ✅</div>
-
-<script>
-// Web Audio API: Dynamic Click Sound Generator
-function playClickSound() {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(1500, audioCtx.currentTime); 
-        oscillator.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.08);
-        
-        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime); 
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.08);
-    } catch (e) {
-        console.log("Audio support blocked by browser:", e);
-    }
-}
-
-// Copy UPI Functionality
-function copyUPI(){
-    playClickSound();
-    navigator.clipboard.writeText("manurathour99@fam");
-    let t=document.getElementById("t");
-    t.style.display="block";
-    setTimeout(()=>t.style.display="none",1800);
 }
 
 // Dynamic Particle Generator
 function createSpaceParticles() {
-    const container = document.getElementById('particles-container');
-    const particleCount = 20; // 100% lightweight count for mobile performance
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
+    var container = document.getElementById('particles-container');
+    if(!container) return;
+    var particleCount = 20; 
+    for (var i = 0; i < particleCount; i++) {
+        var particle = document.createElement('div');
         particle.classList.add('particle');
         
-        const size = Math.random() * 5 + 2; // Particle size 2px to 7px
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 8}s`;
-        particle.style.animationDuration = `${Math.random() * 6 + 6}s`; // Dynamic floating speed
+        var size = Math.random() * 5 + 2; 
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        particle.style.left = (Math.random() * 100) + '%';
+        particle.style.animationDelay = (Math.random() * 8) + 's';
+        particle.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
         
         container.appendChild(particle);
     }
 }
 
-// Fixed Loader Logic (Triggered on DOM ready instead of full load)
+// Initialize particles safely on load
 document.addEventListener("DOMContentLoaded", function(){
-    createSpaceParticles(); // Initialize background particles
-    
-    // Smooth transition delay (1.2 seconds)
-    setTimeout(function(){
-        const loader = document.getElementById("loading-screen");
-        if(loader){
-            loader.style.opacity = "0";
-            loader.style.visibility = "hidden";
-            setTimeout(function(){
-                loader.style.display = "none";
-            }, 500);
-        }
-    }, 1200);
+    createSpaceParticles();
 });
 
-// Share Button logic
-document.getElementById("shareBtn").addEventListener("click", async () => {
-    playClickSound();
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: 'Donate For Nothing',
-                text: 'Donate any amount and receive absolutely NOTHING!',
-                url: window.location.href
-            });
-        } catch (err) {
-            console.log("Error sharing:", err);
+// Share Button logic safely wrapped
+var shareBtn = document.getElementById("shareBtn");
+if(shareBtn) {
+    shareBtn.addEventListener("click", async function() {
+        playClickSound();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Donate For Nothing',
+                    text: 'Donate any amount and receive absolutely NOTHING!',
+                    url: window.location.href
+                });
+            } catch (err) {
+                console.log("Error sharing:", err);
+            }
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link copied to clipboard! Share it with your friends.");
         }
-    } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert("Link copied to clipboard! Share it with your friends.");
-    }
-});
+    });
+}
 </script>
 </body>
 </html>
