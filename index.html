@@ -52,23 +52,5 @@ cursor:pointer;
 box-shadow:0 0 20px rgba(212,175,55,.5);
 ">
   </script>
-📤 Share This Website
-</button>
-
-<script>
-document.getElementById("shareBtn").onclick = async () => {
-  const data = {
-    title: "Donate For Nothing 😂",
-    text: "Donate any amount and receive absolutely NOTHING 😂",
-    url: window.location.href
-  };
-
-  if (navigator.share) {
-    navigator.share(data);
-  } else {
-    navigator.clipboard.writeText(window.location.href);
-    alert("✅ Website link copied! Ab kisi ko bhi bhej do.");
-  }
-};
 </body>
 </html>
